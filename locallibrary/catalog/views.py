@@ -1,13 +1,32 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views import generic
 
 from catalog.models import Book, Author, BookInstance, Genre
+
+class AuthorListView(generic.ListView):
+    model = Author
+    paginate_by = 2
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+
+class BookDetailView(generic.DetailView):
+    model = Book
+
+class BookListView(generic.ListView):
+    model = Book
+    paginate_by = 2
+
+    # context_object_name = 'my_book_list'   # your own name for the list as a template variable
+    # queryset = Book.objects.filter(title__icontains='war')[:5] # Get 5 books containing the title war
+    # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location    
 
 def empty_view(request):
     return HttpResponse('This is empty now.')
 
-def empty_view_id(request, id):
-    return HttpResponse(f'This is empty now. ID: {id}')
+def empty_view_id(request, params):
+    return HttpResponse(f'This is empty now. ID: {params.id}')
 
 def index(request):
     """View function for home page of site."""

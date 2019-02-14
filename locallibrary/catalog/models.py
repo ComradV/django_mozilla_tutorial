@@ -36,6 +36,8 @@ class Book(models.Model):
 
     def display_genre(self):
         return ', '.join(genre.name for genre in self.genre.all()[:3])
+    class Meta:
+        ordering = ['title','author']
     
     display_genre.short_description = 'Genre'
 
@@ -44,6 +46,15 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(blank=True, null=True)
     date_of_death = models.DateField('Died', blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('author-detail', args=[str(self.id)])
+
+    def get_life_period(self):
+        if self.date_of_birth :
+            return f'{self.date_of_birth} - {self.date_of_death if self.date_of_death else "now"}'
+        else:
+            return '-'
 
     class Meta:
         ordering=['last_name','first_name']

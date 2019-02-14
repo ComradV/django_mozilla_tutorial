@@ -3,10 +3,10 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('books/', views.empty_view, name='books'),
-    path('authors/', views.empty_view, name='authors'),
-    path('book/<id>/', views.empty_view_id, {'id':id}),
-    path('author/<id>/', views.empty_view_id, {'id':id}),
+    path('books/', views.BookListView.as_view(), name='books'),
+    path('book/<int:pk>', views.BookDetailView.as_view(), name='book-detail'),
+    path('authors/', views.AuthorListView.as_view(), name='authors'),
+    path('author/<int:pk>', views.AuthorDetailView.as_view(), name='author-detail'),
 
     # path('bookdetail/<id>', views.empty_view, name='book-detail')
 ]
