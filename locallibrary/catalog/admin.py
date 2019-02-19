@@ -43,7 +43,7 @@ make_avilable.short_description = 'Make selected book instances avilable'
 
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
-    list_display = ('book', 'id', 'status', 'due_back')
+    list_display = ('book', 'id', 'status', 'due_back', 'borrower', 'is_overdue')
     list_filter = ('status', 'due_back')
     actions = [make_avilable]
 
@@ -52,6 +52,6 @@ class BookInstanceAdmin(admin.ModelAdmin):
             'fields': ('book', 'imprint', 'id')
         }),
         ('Avilability', {
-            'fields': [('status', 'due_back')] 
+            'fields': [('status', 'due_back', 'borrower')] 
         })
     )
