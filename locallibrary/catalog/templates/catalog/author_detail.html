@@ -3,6 +3,11 @@
 {% block content %}
   <h1>Author: {{ author }}</h1>
   <p><strong>Life period:</strong> {{author.get_life_period}} </p>
+  {% if perms.catalog.can_edit_authors %}
+  <a href="{% url 'author_update' author.pk %}">Update author</a>
+  <a class='text-danger' href="{% url 'author_delete' author.pk %}">Delete this author</a>
+  {% endif %}
+
   {% if author.book_set.all %}
     <h2>Books:</h2>
     {% for book in author.book_set.all %}

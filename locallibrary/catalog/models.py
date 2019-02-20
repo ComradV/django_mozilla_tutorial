@@ -21,12 +21,12 @@ class Book(models.Model):
 
     title = models.CharField(max_length=200)
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+    summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
     isbn = models.CharField(
         'ISBN',
         max_length=13,
         help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>'
     )
-    summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
     genre = models.ManyToManyField('Genre', help_text='Select a genre for this book')
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
 
@@ -40,6 +40,9 @@ class Book(models.Model):
         return ', '.join(genre.name for genre in self.genre.all()[:3])
     class Meta:
         ordering = ['title','author']
+        permissions = (
+            ("can_edit_books", "Create, update, delete"),
+        )  
     
     display_genre.short_description = 'Genre'
 
@@ -60,6 +63,9 @@ class Author(models.Model):
 
     class Meta:
         ordering=['last_name','first_name']
+        permissions = (
+            ("can_edit_authors", "Create, update, delete"),
+        )  
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
@@ -97,7 +103,10 @@ class BookInstance(models.Model):
 
     class Meta:
         ordering = ['due_back']
-        permissions = (("can_mark_returned", "Set book as returned"),)  
+        permissions = (
+            ("can_mark_returned", "Set book as returned"),
+            ("can_renew", "Set renewal date"),
+        )  
 
     def __str__(self):
         return  f'{self.id} ({self.book.title})'

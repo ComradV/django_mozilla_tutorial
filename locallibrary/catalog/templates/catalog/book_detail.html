@@ -8,6 +8,10 @@
   <p><strong>ISBN:</strong> {{ book.isbn }}</p> 
   <p><strong>Language:</strong> {{ book.language }}</p>  
   <p><strong>Genre:</strong> {% for genre in book.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
+  {% if perms.catalog.can_edit_books %}
+  <a href="{% url 'book_update' book.pk %}">Update book</a>
+  <a class='text-danger' href="{% url 'book_delete' book.pk %}">Delete this book</a>
+  {% endif %}
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>
